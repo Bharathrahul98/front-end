@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Filter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: aquamarine;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        #filter-options {
+            margin: 20px 0;
+        }
+
+        #filter-options label {
+            margin-right: 10px;
+        }
+
+        #min-price, #max-price {
+            width: 60px;
+            margin-right: 10px;
+        }
+
+        #filter-button {
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color:whitesmoke;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            
+        }
+
+        .product-item {
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: black;
+            color: white;
+        }
+
+        .category-images {
+            display: flex;
+            justify-content:space-between;
+            margin-top: 20px;
+            
+        }
+
+        .category-images img {
+            width: 100px;
+            height: auto;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .product-item img {
+            max-width: 200px; 
+            height: 200px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Product Filter</h1>
+
+<div id="filter-options">
+    <label for="category-select">Category:</label>
+    <select id="category-select">
+        <option value="all">All</option>
+        <option value="mobiles">Mobiles</option>
+        <option value="earpods">Earpods</option>
+        <option value="washing-machines">Washing Machines</option>
+        <option value="tv">Television</option>
+    </select>
+
+    <label for="price-range">Price-range:</label>
+    <input type="number" id="min-price" placeholder="enter min price">
+    <input type="number" id="max-price" placeholder="enter max price">
+
+    <button id="filter-button">Filter</button>
+</div>
+
+<div id="product-list"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const ProductData = [
+            { name: 'OPPO find N2', category: 'mobiles', price: 19999, image: 'mobile1.jpg' },
+            { name: 'apple', category: 'mobiles', price: 129999, image: 'mobile2.jpg' },
+            { name: 'RealME 11Pro', category: 'mobiles', price: 12999, image: 'mobile3.jpg' },
+            { name: 'redmi note 11', category: 'mobiles', price: 17989, image: 'mobile4.jpg' },
+            { name: 'samsung', category: 'earpods', price: 10000, image: 'earpods1.jpg' },
+            { name: 'redmi', category: 'earpods', price: 9999, image: 'earpods2.jpeg' },
+            { name: 'apple earpods', category: 'earpods', price: 9999, image: 'earpods3.jpg' },
+            { name: 'samsung Bean', category: 'earpods', price: 9999, image: 'earpods4.jpg' },
+
+            { name: 'whirlpool', category: 'washing-machines', price: 10240, image: 'wm1.jpg' },
+            { name: 'IFB 7', category: 'washing-machines', price: 29990, image: 'wm2.jpg' },
+            { name: 'Panasonic', category: 'washing-machines', price: 13990, image: 'wm3.jpg' },
+            { name: 'LG', category: 'washing-machines', price: 25999, image: 'wm4.jpg' },
+            { name: 'Redmi', category: 'tv', price: 39999, image: 'tv1.jpg' },
+            { name: 'Samsung Curved Tv', category: 'tv', price: 39999, image: 'tv2.png' },
+            { name: 'Redmi 64 inches tv', category: 'tv', price: 39999, image: 'tv3.jpg' },
+            { name: 'realme wall smart tv', category: 'tv', price: 39999, image: 'tv4.jpg' },
+        ];
+
+        // Display all products initially
+        displayProducts(ProductData);
+
+        // Filter products when the Filter button is clicked
+        $('#filter-button').on('click', filterProducts);
+
+        // Handle category image clicks to filter products
+        $('.category-images img').on('click', function () {
+            const selectedCategory = $(this).data('category');
+            $('#category-select').val(selectedCategory);
+            filterProducts();
+        });
+    });
+
+    function displayProducts(products) {
+        const productList = $('#product-list');
+        productList.empty();
+
+        products.forEach(product => {
+            productList.append(`
+                <div class="product-item" data-category="${product.category}" data-price="${product.price}" >
+                    
+                    <img src="images/${product.image}" alt="${product.name}">
+                    <p>${product.name} - ₹ ${ product.price}/-</p>
+                </div>
+            `);
+            
+        });
+    }
+
+    
+
+    function filterProducts() {
+        const selectedCategory = $('#category-select').val();
+        const minPrice = parseFloat($('#min-price').val());
+        const maxPrice = parseFloat($('#max-price').val());
+
+        const productList = $('.product-item');
+
+        productList.each(function () {
+            const productCategory = $(this).data('category');
+            const productPrice = parseFloat($(this).data('price'));
+
+            if (
+                (selectedCategory === 'all' || selectedCategory === productCategory) &&
+                (!isNaN(minPrice) ? productPrice >= minPrice : true) &&
+                (!isNaN(maxPrice) ? productPrice <= maxPrice : true)
+            ) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
+</body>
+</html>

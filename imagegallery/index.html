@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.gallery img {
+    max-width: 100%;
+    max-height: 200px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Gallery</h1>
+        <div class="buttons">
+            <button id="All">All</button>
+            <button id="animals">Animals</button>
+            <button id="birds">Birds</button>
+            <button id="fishes">Fishes</button>
+            <button id="insects">Insects</button>
+
+        </div>
+        <div class="gallery">
+            <!-- Images will be displayed here -->
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll("button");
+    const gallery = document.querySelector(".gallery");
+    const images = {
+        animals: ["image1.jpg","image2.jpg","image3.jpg","image4.jpg","image5.jpg","image6.jpg","image8.jpg","image9.jpg","image10.jpg"],
+        birds: ["bird1.jpg", "bird2.jpg", "bird3.jpeg","bird5.jpeg","bird6.jpg","bird7.jpg","bird8.jpg","bird9.png","bird10.jpg"],
+        fishes: ["fish1.jpg","fish2.jpeg","fish3.jpg","fish4.jpg","fish5.png","fish6.jpg","fish7.jpg","fish8.jpg","fish9.jpeg","fish10.jpg"],
+        insects: ["in1.png","in2.jpg","in3.jpg","in4.jpg","in5.jpg","in6.jpg","in7.jpg","in8.jpg","in9.jpg","in10.jpg"],
+        All:["image1.jpg","image2.jpg","image3.jpg","image4.jpg","image5.jpg","image6.jpg","image8.jpg","image9.jpg","image10.jpg","bird1.jpg", "bird2.jpg", "bird3.jpeg","bird5.jpeg","bird6.jpg","bird7.jpg","bird8.jpg","bird9.png","bird10.jpg",
+        "fish1.jpg","fish2.jpeg","fish3.jpg","fish4.jpg","fish5.png","fish6.jpg","fish7.jpg","fish8.jpg","fish9.jpeg","fish10.jpg","in1.png","in2.jpg","in3.jpg","in4.jpg","in5.jpg","in6.jpg","in7.jpg","in8.jpg","in9.jpg","in10.jpg"],
+    };
+
+    function showImages(category) {
+        gallery.innerHTML = "";
+        images[category].forEach((imageName) => {
+            const img = document.createElement("img");
+            img.src = `images/${imageName}`;
+            gallery.appendChild(img);
+        });
+    }
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const category = this.id;
+            showImages(category);
+        });
+    });
+
+    // Show the default category (e.g., All) when the page loads
+    showImages("All");
+});
+
+    </script>
+</body>
+</html>

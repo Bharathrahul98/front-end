@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <title>Mini Project</title>
+    <body style="background-color: black;">
+        <h1 style="color: aqua;  text-align: center; background-color:burlywood; padding: auto;">Reservation ticket candidates</h1>
+    <div>
+        <label for="insertkey" style="color: blueviolet;">Name:</label>
+        <input type="text" id="elementinput">
+        <button onclick="addelement()">ADD name</button>
+
+        <label for="insertvalue" style="color: blueviolet;">Seat no:</label>
+        <input type="number" id="valueinput">
+        <button onclick="addvalue()">Add seat no</button>
+    </div>
+
+    <div>
+        <label for="searchvalue" style="color: blueviolet;">Search:</label>
+        <input type="text" id="searchinput">
+        <button onclick="searchcandidate()">Search</button>  
+        
+    </div>
+
+    <div>
+        <label for="nonreserved" style="color: blueviolet;">Remove:</label>
+        <input type="text" id="removeinput">
+        <button onclick="removedetails()">Remove candidate details</button>
+    </div>
+
+    <div>
+        <button onclick="display()">Display</button>
+    </div>
+
+    <p id="reservation-status" style="color: blueviolet;"></p>
+    <script >
+        // Create a map
+        const personseat = new Map();
+
+        function addelement() {
+            const elementinput = document.getElementById("elementinput");
+            const element = elementinput.value;
+
+            // Check if already exists in the map
+            if (personseat.has(element)) {
+                document.getElementById("reservation-status").innerHTML = element + " already reserved.";
+            } else {
+                personseat.set(element, []);
+                document.getElementById("reservation-status").innerHTML = element + " confirmed ticket";
+            }
+
+            elementinput.value = "";
+        }
+
+        function addvalue() {
+            const valueinput = document.getElementById("valueinput");
+            const valu = valueinput.value;
+
+            const elementinput = document.getElementById("elementinput");
+            const element = elementinput.value;
+
+            if (personseat.has(element)) {
+                const seats = personseat.get(element);
+                if (seats.has(valu)) {
+                    document.getElementById("reservation-status").innerHTML = valu + " already exists.";
+                } else {
+                    seats.add(valu);
+                    document.getElementById("reservation-status").innerHTML = valu + " added to the person seat no.";
+                }
+            } else {
+                document.getElementById("reservation-status").innerHTML = valu + "seat no is reserved ";
+            }
+
+            valueinput.value = "";
+        }
+
+        function searchcandidate() {
+            const searchinput = document.getElementById("searchinput");
+            const element = searchinput.value;
+
+            if (personseat.has(element)) {
+                document.getElementById("reservation-status").innerHTML = element + " has confirmed reservation.";
+            } else {
+                document.getElementById("reservation-status").innerHTML = "The " + element + " is not reserved.";
+            }
+
+            searchinput.value = "";
+        }
+
+        function removedetails() {
+            const removeinput = document.getElementById("removeinput");
+            const element = removeinput.value;
+
+            if (personseat.has(element)) {
+                personseat.delete(element);
+                document.getElementById("reservation-status").innerHTML = element + " has not arrived, ticket canceled.";
+            } else {
+                document.getElementById("reservation-status").innerHTML = element + " seat is empty. Book for others.";
+            }
+
+            removeinput.value = "";
+        }
+
+        function display() {
+            let setvalues = "Seat values:";
+            personseat.forEach(function (value, key) {
+                setvalues += "<br>" + key + ": " + value.join(", ");
+            });
+            document.getElementById("reservation-status").innerHTML = setvalues;
+        }
+    </script>
+    </body>
+</html>
